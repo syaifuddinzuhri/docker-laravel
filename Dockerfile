@@ -46,7 +46,7 @@ RUN docker-php-ext-install \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Copy existing application directory contents to the working directory
-COPY build/ /usr/share/nginx/html/
+COPY . /usr/share/nginx/html/
 
 # Assign permissions of the working directory to the www-data user
 RUN chown www-data:www-data /usr/share/nginx/html/storage
