@@ -3,7 +3,8 @@ version: '3.5'
 services:
     app:
         build:
-            context: '.'
+            context: app
+            dockerfile: Dockerfile
             # dockerfile: /var/www/Dockerfile
         container_name: app
         restart: unless-stopped
