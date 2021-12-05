@@ -102,6 +102,7 @@ jobs:
       - name: "Running Docker Compose"
         uses: appleboy/ssh-action@master
         with:
+          dockerfile : Dockerfile
           host: ${{env.INSTANCE_IP}}
           username: ubuntu
           key: ${{secrets.OCI_INSTANCE_KEY}}
