@@ -54,4 +54,5 @@ RUN chown www-data:www-data  /usr/share/nginx/html/bootstrap/cache
 
 # Expose port 9000 and start php-fpm server (for FastCGI Process Manager)
 EXPOSE 9000
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
 CMD ["php-fpm"]
