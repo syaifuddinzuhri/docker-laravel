@@ -104,6 +104,6 @@ jobs:
         with:
           host: ${{env.INSTANCE_IP}}
           username: opc
-          key: ${{secrets.OCI_KEY_FILE}}
+          key: ${{secrets.OCI_INSTANCE_KEY}}
           script: |
             sudo /usr/local/bin/docker-compose up -d
