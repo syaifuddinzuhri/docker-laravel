@@ -1,10 +1,10 @@
 FROM php:7.4-fpm
 
 # Copy composer.lock and composer.json into the working directory
-COPY composer.lock composer.json /var/www/
+COPY composer.lock composer.json /usr/share/nginx/html/
 
 # Set working directory
-WORKDIR /var/www
+WORKDIR /usr/share/nginx/html
 
 RUN apt-get update
 
@@ -46,11 +46,11 @@ RUN docker-php-ext-install \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Copy existing application directory contents to the working directory
-COPY . /var/www/
+COPY build/ /usr/share/nginx/html/
 
 # Assign permissions of the working directory to the www-data user
-RUN chown www-data:www-data /var/www/storage
-RUN chown www-data:www-data  /var/www/bootstrap/cache
+RUN chown www-data:www-data /usr/share/nginx/html/storage
+RUN chown www-data:www-data  /usr/share/nginx/html/bootstrap/cache
 
 # Expose port 9000 and start php-fpm server (for FastCGI Process Manager)
 EXPOSE 9000
