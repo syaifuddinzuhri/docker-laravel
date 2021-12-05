@@ -95,7 +95,7 @@ jobs:
         with:
           host: ${{ env.INSTANCE_IP }}
           username: ubuntu
-          key: ${{ secrets.OCI_KEY_FILE }}
+          key: ${{ secrets.OCI_INSTANCE_KEY }}
           source: "docker-compose.yml"
           target: "./"
 
