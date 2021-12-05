@@ -103,7 +103,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{env.INSTANCE_IP}}
-          username: opc
+          username: ubuntu
           key: ${{secrets.OCI_INSTANCE_KEY}}
           script: |
             sudo /usr/local/bin/docker-compose up -d
