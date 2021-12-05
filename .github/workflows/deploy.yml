@@ -47,16 +47,16 @@ jobs:
         run: |
           oci setup repair-file-permissions --file /home/runner/.oci/config
           oci setup repair-file-permissions --file /home/runner/.oci/oci_api_key.pem
-      # - name: "Check Existing Instance"
-      #   run: |
-      #     echo "INSTANCE_OCID=$( \
-      #       oci compute instance list \
-      #       --lifecycle-state RUNNING \
-      #       --compartment-id ${{secrets.VM_COMPARTMENT_OCID}} \
-      #       --display-name cicd-demo \
-      #       --query "data [0].id" \
-      #       --raw-output \
-      #       )" >> $GITHUB_ENV
+      - name: "Check Existing Instance"
+        run: |
+          echo "INSTANCE_OCID=$( \
+            oci compute instance list \
+            --lifecycle-state RUNNING \
+            --compartment-id ${{secrets.VM_COMPARTMENT_OCID}} \
+            --display-name server-docker \
+            --query "data [0].id" \
+            --raw-output \
+            )" >> $GITHUB_ENV
       # - name: "Create Instance"
       #   if: ${{!env.INSTANCE_OCID}}
       #   run: |
