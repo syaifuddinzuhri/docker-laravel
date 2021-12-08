@@ -96,5 +96,11 @@ jobs:
             sudo docker pull syaifuddinzuhri/docker-app-web_server
             sudo docker-compose up -d
             sudo docker exec app /bin/bash -c "php artisan key:generate"
-            sudo docker exec app /bin/bash -c "echo 'TEST=cache' >> .env"
-            sudo docker exec app /bin/bash -c "echo 'DB_USERNAME=cache' >> .env"
+            sudo docker exec app /bin/bash -c "echo 'DB_CONNECTION=mysql' >> .env"
+            sudo docker exec app /bin/bash -c "echo 'DB_HOST=10.0.0.176' >> .env"
+            sudo docker exec app /bin/bash -c "echo 'DB_PORT=3306' >> .env"
+            sudo docker exec app /bin/bash -c "echo 'DB_DATABASE=laravel' >> .env"
+            sudo docker exec app /bin/bash -c "echo 'DB_USERNAME=master' >> .env"
+            sudo docker exec app /bin/bash -c "echo 'DB_PASSWORD=Master1!' >> .env"
+            sudo docker exec app /bin/bash -c "echo 'DB_REDIS=cache' >> .env"
+            sudo docker exec app /bin/bash -c "php artisan migrate:fresh --seed"
