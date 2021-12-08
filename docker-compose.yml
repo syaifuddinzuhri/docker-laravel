@@ -27,27 +27,27 @@ services:
             - "8084:80"
         volumes:
             - ./:/usr/share/nginx/html/
-            - ./docker/nginx/conf.d/app.conf:/etc/nginx/conf.d/
+            - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
         networks:
             - app-network
 
-    # db:
-    #     image: mysql:5.7.32
-    #     container_name: db
-    #     restart: unless-stopped
-    #     tty: true
-    #     ports:
-    #         - "3306:3306"
-    #     environment:
-    #         MYSQL_DATABASE: docker_laravel
-    #         MYSQL_ROOT_PASSWORD: root
-    #         SERVICE_TAGS: dev
-    #         SERVICE_NAME: mysql
-    #     volumes:
-    #         - dbdata:/var/lib/mysql/
-    #         - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
-    #     networks:
-    #         - app-network
+    db:
+        image: mysql:5.7.32
+        container_name: db
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: docker_laravel
+            MYSQL_ROOT_PASSWORD: root
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        volumes:
+            - dbdata:/var/lib/mysql/
+            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+        networks:
+            - app-network
 
 networks:
     app-network:
