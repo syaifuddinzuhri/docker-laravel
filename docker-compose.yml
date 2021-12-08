@@ -1,18 +1,17 @@
 version: '3'
 services:
   app:
-    image: syaifuddinzuhri/docker-laravel-app:latest
+    image: syaifuddinzuhri/docker-app:latest
     container_name: app
     restart: unless-stopped
     tty: true
-    env_file: .env
     depends_on:
       - cache
     networks:
       - app-network
 
   web_server:
-    image: syaifuddinzuhri/docker-laravel-app-web_server:latest
+    image: syaifuddinzuhri/docker-app-web_server:latest
     container_name: web_server
     restart: unless-stopped
     tty: true
