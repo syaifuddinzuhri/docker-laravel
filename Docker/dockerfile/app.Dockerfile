@@ -44,18 +44,18 @@ RUN chown -R www-data:www-data /var/www/
 RUN chown -R www-data:www-data /var/www/storage
 RUN chown -R www-data:www-data /var/www/bootstrap
 RUN chown -R www-data:www-data /var/www/public
-RUN chown -R www-data:www-data /var/www/.env
 RUN chmod -R 755 /var/www/
 RUN chmod -R 755 /var/www/storage
 RUN chmod -R 755 /var/www/bootstrap
 RUN chmod -R 755 /var/www/public
-RUN chmod -R 755 /var/www/.env
 RUN chown -R www-data:www-data /var/log/supervisor
 
 # Install dependency
 RUN composer install
 
 COPY .env.example /var/www/.env
+RUN chown -R www-data:www-data /var/www/.env
+RUN chmod -R 755 /var/www/.env
 
 # Expose port 9000
 EXPOSE 9000
