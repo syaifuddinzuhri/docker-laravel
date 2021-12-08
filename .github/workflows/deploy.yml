@@ -25,7 +25,9 @@ jobs:
         run: |
           sudo docker build -f Docker/dockerfile/app.Dockerfile -t app .
           sudo docker build -f Docker/dockerfile/web_server.Dockerfile -t web_server .
+          sudo docker tag app ${{ secrets.DOCKERHUB_USERNAME}}/docker-laravel-app
           sudo docker push ${{ secrets.DOCKERHUB_USERNAME}}/docker-laravel-app
+          sudo docker tag app ${{ secrets.DOCKERHUB_USERNAME}}/docker-laravel-app-web_server
           sudo docker push ${{ secrets.DOCKERHUB_USERNAME}}/docker-laravel-app-web_server
       - name: "Write config"
         run: |
