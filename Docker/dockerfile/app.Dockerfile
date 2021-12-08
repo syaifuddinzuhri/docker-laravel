@@ -46,6 +46,8 @@ RUN chown -R www-data:www-data /var/log/supervisor
 # Install dependency
 RUN composer install
 
+COPY /var/www/.env.example /var/www/.env
+
 # Expose port 9000
 EXPOSE 9000
 
