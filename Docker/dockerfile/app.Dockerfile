@@ -41,6 +41,7 @@ COPY . /var/www/
 # Copy directory project permission ke container
 COPY --chown=www-data:www-data . /var/www/
 RUN chown -R www-data:www-data /var/www
+RUN chmod -R 755 /var/www
 RUN chown -R www-data:www-data /var/log/supervisor
 
 # Install dependency
