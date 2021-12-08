@@ -95,3 +95,6 @@ jobs:
             sudo docker pull syaifuddinzuhri/docker-app
             sudo docker pull syaifuddinzuhri/docker-app-web_server
             sudo docker-compose up -d
+            sudo docker exec app /bin/bash -c "php artisan key:generate"
+            sudo docker exec app /bin/bash -c "echo 'REDIS=cache' >> .env"
+            sudo docker exec app /bin/bash -c "echo 'DB_USERNAME=rootbaru' >> .env"
