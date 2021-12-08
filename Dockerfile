@@ -1,58 +1,58 @@
 FROM php:7.4-fpm
 
-# Copy composer.lock and composer.json into the working directory
-COPY composer.lock composer.json /usr/share/nginx/html/
-
 # Set working directory
-WORKDIR /usr/share/nginx/html
+WORKDIR /var/www/
 
-RUN apt-get update
-
-# Install dependencies for the operating system software
-RUN apt-get install -y \
-    git \
-    apt-utils \
-    zip \
-    curl \
-    sudo \
-    unzip \
-    libzip-dev \
-    libicu-dev \
-    libonig-dev \
-    libbz2-dev \
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
     libpng-dev \
-    libjpeg-dev \
-    libmcrypt-dev \
-    libreadline-dev \
+    libjpeg62-turbo-dev \
     libfreetype6-dev \
-    g++
+    locales \
+    zip \
+    libonig-dev \
+    libzip-dev \
+    jpegoptim optipng pngquant gifsicle \
+    ca-certificates \
+    vim \
+    tmux \
+    unzip \
+    git \
+    cron \
+    supervisor \
+    curl
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install extensions for php.
-RUN docker-php-ext-install \
-    bz2 \
-    intl \
-    iconv \
-    bcmath \
-    opcache \
-    calendar \
-    mbstring \
-    pdo_mysql \
-    zip
+# Install extensions
+RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
+RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/
+RUN docker-php-ext-install gd
+RUN pecl install -o -f redis &&  rm -rf /tmp/pear && docker-php-ext-enable redis
 
-# Install composer (php package manager)
+# Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Copy existing application directory contents to the working directory
-COPY . /usr/share/nginx/html/
+# Copy project ke dalam container
+COPY . /var/www/
 
-# Assign permissions of the working directory to the www-data user
-RUN chown www-data:www-data /usr/share/nginx/html/storage
-RUN chown www-data:www-data  /usr/share/nginx/html/bootstrap/cache
+# Copy directory project permission ke container
+COPY --chown=www-data:www-data . /var/www/
+RUN chown -R www-data:www-data /var/www
+RUN chown -R www-data:www-data /var/log/supervisor
 
-# Expose port 9000 and start php-fpm server (for FastCGI Process Manager)
+# Install dependency
+RUN composer install
+
+# Expose port 9000
 EXPOSE 9000
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
-CMD ["php-fpm"]
+
+# Tambahkan konfigurasi supervisor
+COPY Docker/supervisor/ /etc/
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+
+# Ganti user ke www-data
+USER www-data

@@ -21,10 +21,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: "Build and push"
-        run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/docker-laravel .
-          docker push ${{ secrets.DOCKERHUB_USERNAME}}/docker-laravel
+      # - name: "Build and push"
+      #   run: |
+      #     docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/docker-laravel .
+      #     docker push ${{ secrets.DOCKERHUB_USERNAME}}/docker-laravel
       - name: "Write config"
         run: |
           mkdir ~/.oci
@@ -88,5 +88,10 @@ jobs:
           username: ubuntu
           key: ${{secrets.OCI_INSTANCE_KEY}}
           script: |
-            sudo docker pull syaifuddinzuhri/docker-laravel:latest
-            sudo /usr/local/bin/docker-compose up -d
+            sudo docker build -f Docker/dockerfile/app.Dockerfile -t app .
+            sudo docker build -f Docker/dockerfile/server.Dockerfile -t web_server .
+            sudo docker push ${{ secrets.DOCKERHUB_USERNAME}}/docker-laravel-app
+            sudo docker push ${{ secrets.DOCKERHUB_USERNAME}}/docker-laravel-app-web_server
+            sudo docker pull syaifuddinzuhri/docker-laravel-app
+            sudo docker pull syaifuddinzuhri/docker-laravel-app-web_server
+            sudo docker-compose up -d

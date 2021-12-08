@@ -1,58 +1,36 @@
-version: '3.5'
-
+version: '3'
 services:
-    app:
-        image: syaifuddinzuhri/docker-laravel:latest
-        container_name: app
-        restart: unless-stopped
-        tty: true
-        environment:
-            SERVICE_NAME: app
-            SERVICE_TAGS: dev
-        working_dir: /usr/share/nginx/html
-        ports:
-            - 8000:80
-        volumes:
-            - ./:/usr/share/nginx/html
-            - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-        networks:
-            - app-network
+  app:
+    image: syaifuddinzuhri/docker-laravel-app:latest
+    container_name: app
+    restart: unless-stopped
+    tty: true
+    env_file: .env
+    depends_on:
+      - cache
+    networks:
+      - app-network
 
-    webserver:
-        image: nginx:alpine
-        container_name: webserver
-        restart: unless-stopped
-        tty: true
-        ports:
-            - "8084:80"
-        volumes:
-            - ./:/usr/share/nginx/html/
-            - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
-        networks:
-            - app-network
+  web_server:
+    image: syaifuddinzuhri/docker-laravel-web_server:latest
+    container_name: web_server
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8002:80"
+    depends_on:
+      - app
+    networks:
+      - app-network
 
-    db:
-        image: mysql:5.7.32
-        container_name: db
-        restart: unless-stopped
-        tty: true
-        ports:
-            - "3306:3306"
-        environment:
-            MYSQL_DATABASE: docker_laravel
-            MYSQL_ROOT_PASSWORD: root
-            SERVICE_TAGS: dev
-            SERVICE_NAME: mysql
-        volumes:
-            - dbdata:/var/lib/mysql/
-            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
-        networks:
-            - app-network
+  cache:
+    image: redis:alpine
+    container_name: cache
+    restart: unless-stopped
+    networks:
+      - app-network
 
+#Docker Networks
 networks:
-    app-network:
-        driver: bridge
-
-volumes:
-    dbdata:
-        driver: local
+  app-network:
+    driver: bridge
