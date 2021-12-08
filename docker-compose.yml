@@ -2,6 +2,7 @@ version: '3.5'
 
 services:
     app:
+        image: syaifuddinzuhri/docker-laravel:latest
         container_name: app
         restart: unless-stopped
         tty: true
