@@ -98,3 +98,4 @@ jobs:
             sudo docker exec app /bin/bash -c "sudo chmod -R 777 storage"
             sudo docker exec app /bin/bash -c "sudo chmod -R 777 bootstrap"
             sudo docker exec app /bin/bash -c "sudo chmod -R 777 public"
+            sudo docker exec app /bin/bash -c "composer update"
